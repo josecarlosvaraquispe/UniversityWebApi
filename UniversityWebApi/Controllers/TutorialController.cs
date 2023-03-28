@@ -31,14 +31,14 @@ namespace UniversityWebApi.Controllers
 
         // POST api/<TutorialController>
         [HttpPost]
-        public void Create([FromBody] string value)
+        public void Create(Tutorial tut)
         {
 
         }
 
         // PUT api/<TutorialController>/5
         [HttpPut("{id}")]
-        public void Update(int id, [FromBody] string value)
+        public void Update(int id, Tutorial tut)
         {
         }
 
