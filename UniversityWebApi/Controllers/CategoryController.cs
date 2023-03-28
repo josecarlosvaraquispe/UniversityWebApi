@@ -10,39 +10,41 @@ namespace UniversityWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class Student1Controller : ControllerBase
+    public class CategoryController : ControllerBase
     {
-        // GET: api/Student1
+        // GET: api/Category
         [HttpGet]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
         }
 
-        // GET: api/Student1/5
-        [HttpGet("{id}", Name = "Get")]
-        public Student Get(int id)
+        // GET: api/Category/5
+        [HttpGet("{id}", Name = "GetCategory")]
+        public Category GetCategory(int id)
         {
-            Student student = new Student();
-            student.Id = id;
-            student.Name = "Student " + id.ToString();
+            Category category = new Category();
+            category.Id = id;
+            category.Name = "Category " + id.ToString();
+            category.Description = "Description of category " + id.ToString();
+            category.Quantity = 1;
             
-            return student;
+            return category;
         }
 
-        // POST: api/Student1
+        // POST: api/Category
         [HttpPost]
         public void Post([FromBody] string value)
         {
         }
 
-        // PUT: api/Student1/5
+        // PUT: api/Category/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
-        // DELETE: api/Student1/5
+        // DELETE: api/Category/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
