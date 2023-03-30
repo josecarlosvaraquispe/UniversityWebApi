@@ -8,7 +8,7 @@ namespace UniversityWebApi.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        private static List<Student> Students = new List<Student>()
+        private static List<Student> _students = new List<Student>()
         {
             new Student(){ Id=1, Name = "Carlos", LastName= "Gomez"},
             new Student(){ Id=1, Name = "Carlos", LastName= "Moscoso"},
@@ -19,9 +19,9 @@ namespace UniversityWebApi.Controllers
 
         // GET: api/Student/{name}
         [HttpGet("{name}",Name= "GetStudent")]
-        public List<Student> GetbyName(string name)
+        public List<Student> GetByName(string name)
         {
-            return Students.Where(student => student.Name == name).ToList();
+            return _students.Where(student => student.Name == name).ToList();
         }
 
         // GET api/Student/5
@@ -57,8 +57,19 @@ namespace UniversityWebApi.Controllers
 
         // DELETE api/<Student>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            try
+            {
+                if (id == 0 || id>_students.Count)
+                    return StatusCode(400);
+                else
+                    return StatusCode(201);
+            }
+            catch
+            {
+                return StatusCode(500);
+            }
         }
     }
 }
