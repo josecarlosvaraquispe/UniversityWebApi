@@ -12,16 +12,24 @@ namespace UniversityWebApi.Controllers
     [ApiController]
     public class TutorialController : ControllerBase
     {
-        // GET: api/Tutorial
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private static List<Tutorial> Tutorials = new List<Tutorial>()
         {
-            return new string[] { "value1", "value2" };
+            new Tutorial(){ Id=1, Title = "Tutorial 1", Year= 1995, Description= "Descripcion 1"},
+            new Tutorial(){ Id=1, Title = "Tutorial 2", Year= 1990, Description= "Descripcion 2"},
+            new Tutorial(){ Id=2, Title = "Tutorial 3", Year= 1999, Description= "Descripcion 3"},
+            new Tutorial(){ Id=3, Title = "Tutorial 4", Year= 2005, Description= "Descripcion 4"},
+            new Tutorial(){ Id=4, Title = "Tutorial 5", Year= 2008, Description= "Descripcion 5"},
+        };
+        // GET: api/Tutorial
+        [HttpGet("{title}", Name = "GetbyTitle")]
+        public List<Tutorial> GetbyTitle(string title)
+        {
+            return Tutorials.Where(tutorial => tutorial.Title == title).ToList();
         }
 
         // GET: api/Tutorial/5
-        [HttpGet("{id}", Name = "GetTutorial")]
-        public Tutorial GetTutorial(int id)
+        [HttpGet("{id:int}", Name = "GetTutorial")]
+        public Tutorial Get(int id)
         {
             Tutorial tutorial = new Tutorial();
             tutorial.Id = id;
@@ -34,14 +42,22 @@ namespace UniversityWebApi.Controllers
 
         // POST: api/Tutorial
         [HttpPost]
-        public void Create(Tutorial tut)
+        public IActionResult Create(Tutorial tut)
         {
+            if (tut.Title == "")
+                return StatusCode(400);
+            else
+                return StatusCode(201);
         }
 
         // PUT: api/Tutorial/5
         [HttpPut("{id}")]
-        public void Update(int id, Tutorial tut)
+        public IActionResult Update(int id, [FromBody] Tutorial tutorial)
         {
+            if (tutorial.Id == 0)
+                return StatusCode(400);
+            else
+                return StatusCode(201);
         }
 
         // DELETE: api/Tutorial/5
