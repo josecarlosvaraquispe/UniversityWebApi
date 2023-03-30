@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Runtime.CompilerServices;
+using Microsoft.AspNetCore.Mvc;
 using UniversityWebApi.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -26,13 +27,9 @@ namespace UniversityWebApi.Controllers
 
         // GET api/Student/5
         [HttpGet("{id:int}", Name = "GetById")]
-        public Student Get(int id)
+        public List<Student> Get(int id)
         {
-            Student student = new Student();
-            student.Id = id;
-            student.Name= "Student " + id.ToString();
-
-            return student;
+            return _students.Where(student => student.Id == id).ToList();
         }
 
         // POST api/<Student>
@@ -49,10 +46,33 @@ namespace UniversityWebApi.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] Student student)
         {
-            if( student.Id == 0)
-                return StatusCode(400);
-            else
-                return StatusCode(201);
+            try
+            {
+                if (student.Id == 0 || id > _students.Count)
+                    return StatusCode(400);
+                else
+                    return StatusCode(201);
+            }
+            catch
+            {
+                return StatusCode(500);
+            }
+        }
+
+        [HttpPatch(template: "{id}")]
+        public IActionResult PatchName(int id, String name)
+        {
+            try
+            { 
+                if (name == "" || id == 0 || id > _students.Count) 
+                    return StatusCode(400);
+                else 
+                    return StatusCode(200);
+            }
+            catch
+            {
+                return StatusCode(500);
+            }
         }
 
         // DELETE api/<Student>/5
