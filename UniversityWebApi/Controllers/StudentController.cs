@@ -8,33 +8,51 @@ namespace UniversityWebApi.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        // GET: api/<Student>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private static List<Student> Students = new List<Student>()
         {
-            return new string[] { "value1", "value2" };
+            new Student(){ Id=1, Name = "Carlos", LastName= "Gomez"},
+            new Student(){ Id=1, Name = "Carlos", LastName= "Moscoso"},
+            new Student(){ Id=2, Name = "Juan", LastName= "Gonzalez"},
+            new Student(){ Id=3, Name = "Arturo", LastName= "Aguirre"},
+            new Student(){ Id=4, Name = "Laura", LastName= "Petri"},
+        };
+
+        // GET: api/Student/{name}
+        [HttpGet("{name}",Name= "GetStudent")]
+        public List<Student> GetbyName(string name)
+        {
+            return Students.Where(student => student.Name == name).ToList();
         }
 
-        // GET api/<Student>/5
-        [HttpGet("{id}")]
+        // GET api/Student/5
+        [HttpGet("{id:int}", Name = "GetById")]
         public Student Get(int id)
         {
             Student student = new Student();
             student.Id = id;
             student.Name= "Student " + id.ToString();
+
             return student;
         }
 
         // POST api/<Student>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] Student student)
         {
+            if (student.Name == "")
+                return StatusCode(400);
+            else
+                return StatusCode(201);
         }
 
         // PUT api/<Student>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, [FromBody] Student student)
         {
+            if( student.Id == 0)
+                return StatusCode(400);
+            else
+                return StatusCode(201);
         }
 
         // DELETE api/<Student>/5
